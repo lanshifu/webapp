@@ -8,13 +8,10 @@ async web application.
 '''
 
 import logging; logging.basicConfig(level=logging.INFO)
-
 import asyncio, os, json, time
 from datetime import datetime
-
 from aiohttp import web
 from jinja2 import Environment, FileSystemLoader
-
 import orm
 from coroweb import add_routes, add_static
 
@@ -41,8 +38,9 @@ def init_jinja2(app, **kw):
 
 async def logger_factory(app, handler):
     async def logger(request):
+        # 记录日志:
         logging.info('Request: %s %s' % (request.method, request.path))
-        # await asyncio.sleep(0.3)
+        # 继续处理请求:
         return (await handler(request))
     return logger
 
@@ -58,6 +56,8 @@ async def data_factory(app, handler):
         return (await handler(request))
     return parse_data
 
+
+# 这个拦截器是 把返回值转换为web.Response对象再返回
 async def response_factory(app, handler):
     async def response(request):
         logging.info('Response handler...')
@@ -111,6 +111,7 @@ def datetime_filter(t):
 
 async def init(loop):
     await orm.create_pool(loop=loop, host='127.0.0.1', port=3306, user='root', password='root', db='mysql')
+    # middleware是一种拦截器，一个URL在被某个函数处理前，可以经过一系列的middleware的处理
     app = web.Application(loop=loop, middlewares=[
         logger_factory, response_factory
     ])

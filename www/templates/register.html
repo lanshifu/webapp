@@ -35,7 +35,7 @@ $(function () {
                     return $form.showFormError('两次输入的口令不一致');
                 }
                 var email = this.email.trim().toLowerCase();
-                $form.postJSON('/api/users', {
+                $form.postJSON('/api/register', {
                     name: this.name.trim(),
                     email: email,
                     passwd: CryptoJS.SHA1(email + ':' + this.password1).toString()
@@ -43,7 +43,7 @@ $(function () {
                     if (err) {
                         return $form.showFormError(err);
                     }
-                    return location.assign('/');
+                    return location.assign('/login');
                 });
             }
         }
@@ -73,15 +73,15 @@ $(function () {
                 </div>
             </div>
             <div class="uk-form-row">
-                <label class="uk-form-label">输入口令:</label>
+                <label class="uk-form-label">密码        :</label>
                 <div class="uk-form-controls">
-                    <input v-model="password1" type="password" maxlength="50" placeholder="输入口令" class="uk-width-1-1">
+                    <input v-model="password1" type="password" maxlength="50" placeholder="输入密码" class="uk-width-1-1">
                 </div>
             </div>
             <div class="uk-form-row">
-                <label class="uk-form-label">重复口令:</label>
+                <label class="uk-form-label">再次输入密码:</label>
                 <div class="uk-form-controls">
-                    <input v-model="password2" type="password" maxlength="50" placeholder="重复口令" class="uk-width-1-1">
+                    <input v-model="password2" type="password" maxlength="50" placeholder="再次输入密码" class="uk-width-1-1">
                 </div>
             </div>
             <div class="uk-form-row">
