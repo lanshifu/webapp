@@ -10,6 +10,9 @@ from urllib import parse
 from aiohttp import web
 
 from apis import APIError
+from apis import HttpResult
+
+
 
 def get(path):
     '''
@@ -132,6 +135,7 @@ class RequestHandler(object):
         if self._required_kw_args:
             for name in self._required_kw_args:
                 if not name in kw:
+                    # return dict(result=HttpResult('',10,'Missing argument: %s' % name))
                     return web.HTTPBadRequest('Missing argument: %s' % name)
         logging.info('call with args: %s' % str(kw))
         try:
